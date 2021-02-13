@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   Button,
   Flex,
@@ -75,7 +75,9 @@ export default function TopicCard(props) {
                       : `https://tse4.mm.bing.net/th?id=OIP.PV6MZaUPyuN_H7kCfPeSVAHaE7&pid=Api`
                   }
                 ></Avatar>
-                <Text display="inline">{topic.author.name}</Text>
+                <Text display="inline">
+                  {topic.author ? topic.author.name : ""}
+                </Text>
               </Flex>
             </Flex>
 
@@ -126,22 +128,23 @@ export default function TopicCard(props) {
               </Flex>
             </Flex>
             <Flex mt="20px">
-              {topic.tags.map((tag) => (
-                <Box
-                  key={tag.name}
-                  px="12px"
-                  py="4px"
-                  mx="10px"
-                  fontSize="12px"
-                  bg={tag.color}
-                  color="white"
-                  opacity="0.8"
-                  fontWeight="bold"
-                  borderRadius="lg"
-                >
-                  {tag.language}
-                </Box>
-              ))}
+              {topic.tags &&
+                topic.tags.map((tag) => (
+                  <Box
+                    key={tag.name}
+                    px="12px"
+                    py="4px"
+                    mx="10px"
+                    fontSize="12px"
+                    bg={tag.color}
+                    color="white"
+                    opacity="0.8"
+                    fontWeight="bold"
+                    borderRadius="lg"
+                  >
+                    {tag.language}
+                  </Box>
+                ))}
             </Flex>
           </Flex>
           <Collapse className="comment_area" in={isOpen} animateOpacity>
