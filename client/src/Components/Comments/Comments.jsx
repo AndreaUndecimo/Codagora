@@ -10,7 +10,7 @@ export default function Comments({ topic }) {
       {topic.comments.length !== 0 ? (
         topic.comments.map((comment) => (
           <>
-            <Flex flexDir="column" alignItems="center">
+            <Flex flexDir="column" alignItems="center" key={comment._id}>
               <Flex
                 px="50px"
                 mb="20px"
