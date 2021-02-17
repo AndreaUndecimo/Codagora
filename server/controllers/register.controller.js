@@ -56,15 +56,6 @@ async function registerUserGithub(ctx) {
   if (/\s/g.test(name)) {
     let [firstName, surname] = name.split(" ");
     //eslint-disable-next-line
-    const user = new User({
-      name: firstName,
-      surname,
-      email,
-      avatar_url,
-      gists_url,
-      html_url,
-      location,
-    });
   }
 
   const user = new User({
