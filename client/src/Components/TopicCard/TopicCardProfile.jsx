@@ -4,7 +4,6 @@ import { FcLike } from "react-icons/fc";
 import moment from "moment";
 import { StateContext } from "../../global.context/globalStore.reducer";
 import { deleteTopic } from "../../services/ApiTopicsClientService";
-import "./TopicCardProfile.css";
 
 export default function TopicCard({ topic, setPosts, posts }) {
   const { state } = useContext(StateContext);

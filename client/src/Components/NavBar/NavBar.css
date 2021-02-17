@@ -2,6 +2,7 @@
   display: flex;
   justify-content: space-between;
   height: 70px;
+  z-index: 1000;
 }
 
 .nav-wrapper.css-1hh93v9.scrolled {
@@ -12,7 +13,6 @@
     rgba(0, 166, 200, 1) 100%
   );
   transition: background-color 1s ease-in;
-  z-index: 1050;
 }
 
 .nav-wrapper.css-1hh93v9 {
@@ -24,7 +24,6 @@
 .css-k008qs {
   margin-right: 20px;
   transition: background-color 0.4s ease, color0.4s ease;
-  z-index: 1050;
 }
 
 .nav-wrapper.scrolled {
