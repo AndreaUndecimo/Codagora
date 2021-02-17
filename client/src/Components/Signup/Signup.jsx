@@ -1,5 +1,16 @@
-import React, { useState } from "react";
-import { registerUser } from "../../services/ApiClientService";
+import React, { useState, useEffect, useContext } from "react";
+import { StateContext } from "../../global.context/globalStore.reducer";
+import { validateSignupForm } from "../../utils/validation.helper";
+import GitHubLogin from "react-github-login";
+import onSuccess from "../../utils/auth.helpers";
+import {
+  registerUser,
+  completeAuthentication,
+  getProfile,
+  getGithubProfile,
+  registerUserGithub,
+  githubSignIn,
+} from "../../services/ApiUserClientService";
 import {
   Box,
   CircularProgress,
@@ -11,50 +22,70 @@ import {
   Button,
   Flex,
   ThemeProvider,
+  Text,
+  Icon,
 } from "@chakra-ui/react";
-import ErrorMessage from "../ErrorMessage/ErrorMessage";
-import { useForm } from "react-hook-form";
+import { SiGithub } from "react-icons/si";
+import ErrorMessage from "../UI_Aids/ErrorMessage/ErrorMessage";
 import customTheme from "../../theme/";
+// import ImageUploader from "react-images-upload";
+import "./Signup.css";
 
 export default function Signup() {
-  async function registerNewUser({ name, email, password }) {
-    registerUser({ name, email, password })
-      .then((res) => res.data)
-      .catch((error) => setError(error.response.data));
-  }
-
-  const { errors } = useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [userDetails, setUserDetails] = useState({
     name: "",
+    surname: "",
     email: "",
     password: "",
   });
   const [error, setError] = useState("");
   const [show, setShow] = useState(false);
+  // const [image, setImage] = useState({ pictures: [] });
+  const { state, dispatch } = useContext(StateContext);
 
-  function submitHandle(e) {
+  useEffect(() => {
+    (state.isAuth || state.isAuthWithGithub) &&
+      document.querySelector(".form-wrapper").classList.remove("show");
+  }, [state.isAuth, state.isAuthWithGithub]);
+
+  async function submitHandle(e) {
     e.preventDefault();
     try {
-      registerNewUser(userDetails);
+      await registerUser(userDetails).then((res) => {
+        completeAuthentication(res.data);
+        getProfile(res.data).then((res) =>
+          dispatch({ type: "user", payload: res.data })
+        );
+      });
       setIsLoading(false);
-      setUserDetails({ name: "", email: "", password: "" });
-      setError("");
+      dispatch({ type: "isAuth", payload: true });
+      setUserDetails({ name: "", email: "", surname: "", password: "" });
     } catch (error) {
       setIsLoading(false);
+      error.response.data
+        ? setError(error.response.data)
+        : console.error(error);
     }
   }
 
   return (
     <>
       <ThemeProvider theme={customTheme}>
-        <Flex width="full" align="center" justifyContent="center" mt={10}>
+        <Flex
+          width="full"
+          align="center"
+          justifyContent="center"
+          mt={10}
+          p="10px"
+        >
           <Box>
             {error && <ErrorMessage message={error} />}
             <form onSubmit={submitHandle}>
-              <FormControl isInvalid={errors.message} isRequired>
+              <FormControl isRequired>
                 <FormLabel>Name</FormLabel>
                 <Input
+                  autoFocus={false}
                   value={userDetails.name}
                   type="text"
                   placeholder="Name"
@@ -63,9 +94,22 @@ export default function Signup() {
                   }
                 />
               </FormControl>
-              <FormControl mt={3} isInvalid={errors.message} isRequired>
+              <FormControl isRequired>
+                <FormLabel>Surname</FormLabel>
+                <Input
+                  autoFocus={false}
+                  value={userDetails.surname}
+                  type="text"
+                  placeholder="Name"
+                  onChange={(e) =>
+                    setUserDetails({ ...userDetails, surname: e.target.value })
+                  }
+                />
+              </FormControl>
+              <FormControl mt={3} isRequired>
                 <FormLabel>Email</FormLabel>
                 <Input
+                  autoFocus={false}
                   value={userDetails.email}
                   type="email"
                   placeholder="Email"
@@ -74,10 +118,11 @@ export default function Signup() {
                   }
                 />
               </FormControl>
-              <FormControl my={3} isInvalid={errors.message} isRequired>
+              <FormControl my={3} isRequired>
                 <FormLabel>Password</FormLabel>
                 <InputGroup size="md">
                   <Input
+                    autoFocus={false}
                     value={userDetails.password}
                     type={show ? "text" : "password"}
                     placeholder="*******"
@@ -99,23 +144,65 @@ export default function Signup() {
                   </InputRightElement>
                 </InputGroup>
               </FormControl>
-              <Button
-                width="full"
-                mt={4}
-                type="submit"
-                colorScheme="primary"
-                variant="outline"
-                boxShadow="sm"
-                _hover={{ boxShadow: "md" }}
-                _active={{ boxShadow: "lg" }}
+
+              <Flex
+                justifyContent="space-around"
+                alignItems="center"
+                mt="30px"
+                flexDir="column"
               >
-                {isLoading ? (
-                  <CircularProgress isIndeterminate size="24px" color="teal" />
-                ) : (
-                  "Register"
-                )}
-              </Button>
+                <Button
+                  mb="10px"
+                  size="sm"
+                  type="submit"
+                  colorScheme="primary"
+                  variant="outline"
+                  boxShadow="sm"
+                  disabled={validateSignupForm(
+                    userDetails.email,
+                    userDetails.password,
+                    userDetails.name,
+                    userDetails.surname
+                  )}
+                  _hover={{ boxShadow: "md" }}
+                  _active={{ boxShadow: "lg" }}
+                >
+                  {isLoading ? (
+                    <CircularProgress
+                      isIndeterminate
+                      size="24px"
+                      color="teal"
+                    />
+                  ) : (
+                    "Register"
+                  )}
+                </Button>
+                <Text mb="10px" fontWeight="bold">
+                  -OR-
+                </Text>
+              </Flex>
             </form>
+            <Flex pr="20px" alignItems="center" justify="center">
+              <Icon as={SiGithub} />
+              <GitHubLogin
+                redirectUri="http://localhost:3000/"
+                clientId="1ccd653c63ee11bfbc36"
+                className="github_btn"
+                scope="user:email:gist"
+                onSuccess={(response) =>
+                  onSuccess(
+                    response,
+                    dispatch,
+                    githubSignIn,
+                    setError,
+                    registerUserGithub,
+                    completeAuthentication,
+                    getGithubProfile
+                  )
+                }
+                onFailure={(error) => console.error(error)}
+              />
+            </Flex>
           </Box>
         </Flex>
       </ThemeProvider>

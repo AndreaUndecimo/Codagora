@@ -1,10 +1,6 @@
-#root {
-  height: 200vh;
-}
-
 .main-wrapper {
   display: flex;
-  margin: 30px 20px;
+  margin: 100px 20px;
   position: relative;
   justify-content: center;
 }
@@ -16,6 +12,20 @@
   font-size: 3rem;
   font-weight: 700;
   animation: smooth_appear_title 2s ease-in-out;
+  padding: 5px;
+  font-size: 4rem;
+  font-weight: 700;
+}
+
+.banner {
+  background: linear-gradient(
+    108deg,
+    rgba(100, 208, 231, 1) 0%,
+    rgba(202, 240, 248, 1) 74%,
+    rgba(210, 234, 238, 1) 89%
+  );
+  box-shadow: 0 0 10px #3333;
+  height: 40vh;
 }
 
 .subtitle {
@@ -37,26 +47,10 @@ svg {
   width: 350px;
 }
 
-@keyframes smooth_appear_title {
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 0.7;
-  }
-  100% {
-    opacity: 1;
-  }
-}
 
-@keyframes smooth_appear_subtitle {
-  0% {
-    opacity: 0;
-  }
-  90% {
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 1;
-  }
+.titles {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
 }

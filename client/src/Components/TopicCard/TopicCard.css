@@ -1,0 +1,14 @@
+.comment_area {
+  overflow-y: scroll !important;
+}
+
+.like_btn {
+  transition: all 0.2s;
+  background-color: transparent !important;
+}
+
+.like_btn:hover {
+  transform: scale(1.1);
+  border: 1px solid red;
+  background-color: rgb(236, 143, 143) !important;
+}

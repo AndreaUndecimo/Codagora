@@ -15,7 +15,7 @@ import "./UserForm.css";
 import Login from "../LoginPage/Login";
 import customTheme from "../../theme/";
 
-export default function UserForm() {
+export default function UserForm({ isAuth, setUser, setIsAuth }) {
   const { colorMode } = useColorMode();
   return (
     <ThemeProvider theme={customTheme}>
@@ -25,7 +25,7 @@ export default function UserForm() {
           p={6}
           boxShadow="lg"
           rounded="lg"
-          w="350px"
+          w="400px"
         >
           <Tabs variant="enclosed-colored" align="center" isFitted>
             <TabList>
@@ -34,10 +34,18 @@ export default function UserForm() {
             </TabList>
             <TabPanels>
               <TabPanel>
-                <Signup />
+                <Signup
+                  setUser={setUser}
+                  setIsAuth={setIsAuth}
+                  isAuth={isAuth}
+                />
               </TabPanel>
               <TabPanel>
-                <Login />
+                <Login
+                  setUser={setUser}
+                  setIsAuth={setIsAuth}
+                  isAuth={isAuth}
+                />
               </TabPanel>
             </TabPanels>
           </Tabs>

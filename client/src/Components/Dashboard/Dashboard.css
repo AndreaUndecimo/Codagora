@@ -1,0 +1,81 @@
+.icons-list figure {
+  display: inline-block;
+  height: 2rem;
+  width: 2rem;
+  background-position: center center;
+  background-size: contain;
+  margin-right: 10px;
+  position: relative;
+}
+
+.icons-list figure::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 42px;
+  height: 2px;
+  width: 8px;
+  transform-origin: 0 0;
+  transform: scaleX(0);
+  transition: transform 0.35s;
+  z-index: 2;
+  background-color: black;
+}
+
+.icons-list button:hover figure::before {
+  transform: scaleX(1);
+}
+
+.icons-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.icons-list button {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px 10px 10px;
+  background-color: white;
+  transition: background-color 0.5s ease;
+  border-radius: 10px;
+}
+
+.icons-list button p {
+  display: inline-block;
+  transition: transform 0.35s;
+}
+
+.icons-list button:hover p {
+  transform: translateX(10px);
+}
+
+.icons-list button:hover {
+  background-color: #eee;
+}
+
+#all-categories {
+  background-color: #edae49;
+}
+
+.order_by::before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  height: 10px;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  width: 100%;
+}
+
+.order_by {
+  position: relative;
+}

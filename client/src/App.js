@@ -1,12 +1,10 @@
 import React from "react";
-import { Router } from "@reach/router";
+import React from "react";
 import { CSSReset, ThemeProvider } from "@chakra-ui/react";
 import customTheme from "./theme/";
 import NavBar from "./Components/NavBar/NavBar";
 import LandingPage from "./Components/LandingPage/LandingPage";
-import Home from "./Components/Home";
 import { Fonts } from "./theme/Fonts";
-import { postTopic } from "./services/ApiClientService";
 
 function App() {
   return (
@@ -15,15 +13,25 @@ function App() {
         <ThemeProvider theme={customTheme}>
           <Fonts />
           <CSSReset />
-          <NavBar />
-          <Router>
-            <LandingPage path="/" postTopic={postTopic} />
-            <Home path="/home" />
-          </Router>
+          <StateContext.Provider value={{ state, dispatch }}>
+            <NavBar />
+            <TransitionRouter>
+              <LandingPage path="/" />
+              <AddTopic path="/add_topic" />
+              <Profile path="/profile" />
+              <SingleTopicPage path="single_topic/:id" />
+              <PageNotFound default />
+            </TransitionRouter>
+            <Footer />
+          </StateContext.Provider>
         </ThemeProvider>
       </React.StrictMode>
     </>
   );
 }
 
+<<<<<<< HEAD
 export default App;
+=======
+export { StateContext, App };
+>>>>>>> e3d34fdabd5ab3d75f5589755ec3c8b983e4eb63

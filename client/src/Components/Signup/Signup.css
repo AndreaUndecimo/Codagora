@@ -2,12 +2,6 @@
   margin: 30px auto;
 }
 
-/* .title-box h1 {
-  text-align: center;
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-} */
-
 .signup-box {
   display: flex;
   justify-content: center;
@@ -28,6 +22,16 @@
 label {
   text-align: center;
   margin: 5px 0;
+}
+
+.github_btn {
+  background-color: black;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-weight: bold;
+  line-height: 1.2;
+  margin-left: 5px;
 }
 
 #name_field,
