@@ -151,9 +151,6 @@ export default function Dashboard() {
                 >
                   Relevant
                 </Button>
-                <Button mx="10px" variant="outline" colorScheme="primary">
-                  Discussed
-                </Button>
               </Flex>
               <Flex my="20px">
                 {(state.isAuth || state.isAuthWithGithub) && (

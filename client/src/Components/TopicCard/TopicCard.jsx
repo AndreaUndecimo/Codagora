@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import {
   Button,
   Flex,
@@ -66,7 +66,7 @@ export default function TopicCard(props) {
                   mr="20px"
                   name={
                     topic.author
-                      ? `${topic.author.name} ${topic.author.name.surname}`
+                      ? `${topic.author.name} ${topic.author.surname}`
                       : ""
                   }
                   src={
